@@ -1,0 +1,50 @@
+// Apply the java plugin to add support for Java Library
+apply plugin: 'java'
+apply plugin: 'idea'
+
+// In this section we declare where to find the dependencies of project
+repositories {
+    // Use MavenCentral for resolving your dependencies.
+     mavenCentral()
+}
+
+// In this section we define dependencies with their scope
+dependencies {
+
+    // Use JUnit test framework
+    testCompile 'junit:junit:4.12'
+}
+
+
+
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
+
+test {
+    // Print in console the result of test
+    afterTest { test, result ->
+        println "Executing test ${test.name} [${test.className}] with result: ${result.resultType}"
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.thoughtworks.viplove.railroad.Application'
+        )
+    }
+}
+
